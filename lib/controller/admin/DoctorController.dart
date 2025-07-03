@@ -5,19 +5,18 @@ import 'package:eduction_system/model/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 abstract class DoctorController extends GetxController {
-createDoctor({
+  createDoctor({
     required String username,
     required String password,
     required String phone,
   });
-updateDoctor(UserModel updatedDoctor);
-deleteDoctor(int id);
- fetchDoctors();
+  updateDoctor(UserModel updatedDoctor);
+  deleteDoctor(int id);
+  fetchDoctors();
 }
- class DoctorControllerImp extends DoctorController {
 
+class DoctorControllerImp extends DoctorController {
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
@@ -25,9 +24,7 @@ deleteDoctor(int id);
   List<UserModel> doctors = [];
   bool isLoading = false;
 
- 
-
-@override
+  @override
   Future<bool> createDoctor({
     required String username,
     required String password,
@@ -50,7 +47,7 @@ deleteDoctor(int id);
     };
 
     ApiResponse response = await apiClient.postData(
-      url: '$serverLink/auth/create-doctor',
+      url: '${ServerConfig().serverLink}/auth/create-doctor',
       data: doctorData,
       headers: {
         "Authorization": "Bearer $token",
@@ -61,7 +58,6 @@ deleteDoctor(int id);
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.snackbar("نجاح", "تم إضافة الدكتور بنجاح");
 
-      // افتراضياً نضيف الدكتور محليًا للقائمة (يجب تعديل إذا API يعيد ID)
       doctors.add(UserModel(
         user_id: doctors.length + 1,
         username: username,
@@ -77,9 +73,8 @@ deleteDoctor(int id);
     }
   }
 
-
-@override
-Future<bool> updateDoctor(UserModel updatedDoctor) async {
+  @override
+  Future<bool> updateDoctor(UserModel updatedDoctor) async {
     ApiClient apiClient = ApiClient();
 
     final MyServices myServices = Get.find<MyServices>();
@@ -103,7 +98,8 @@ Future<bool> updateDoctor(UserModel updatedDoctor) async {
     }
 
     ApiResponse response = await apiClient.patchData(
-      url: '$serverLink/users/doctors/${updatedDoctor.user_id}',
+      url:
+          '${ServerConfig().serverLink}/users/doctors/${updatedDoctor.user_id}',
       data: doctorData,
       headers: {
         "Authorization": "Bearer $token",
@@ -114,7 +110,8 @@ Future<bool> updateDoctor(UserModel updatedDoctor) async {
     if (response.statusCode == 200) {
       Get.snackbar("نجاح", "تم تعديل بيانات الدكتور بنجاح");
 
-      int index = doctors.indexWhere((doc) => doc.user_id == updatedDoctor.user_id);
+      int index =
+          doctors.indexWhere((doc) => doc.user_id == updatedDoctor.user_id);
       if (index != -1) {
         doctors[index] = updatedDoctor;
         update();
@@ -126,15 +123,13 @@ Future<bool> updateDoctor(UserModel updatedDoctor) async {
     }
   }
 
-
-
   @override
-Future<void> fetchDoctors() async {
+  Future<void> fetchDoctors() async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.getData(
-        url: '$serverLink/users/doctors',
+        url: '${ServerConfig().serverLink}/users/doctors',
       );
 
       if (response.statusCode == 200) {
@@ -153,15 +148,13 @@ Future<void> fetchDoctors() async {
     }
   }
 
-
-
   @override
-Future<void> deleteDoctor(int id) async {
+  Future<void> deleteDoctor(int id) async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.deleteData(
-        url: '$serverLink/users/doctors/$id',
+        url: '${ServerConfig().serverLink}/users/doctors/$id',
       );
 
       if (response.statusCode == 200 || response.statusCode == 204) {
@@ -186,12 +179,9 @@ Future<void> deleteDoctor(int id) async {
     super.dispose();
   }
 
-
-   @override
+  @override
   void onInit() {
     super.onInit();
     fetchDoctors();
   }
-
 }
-

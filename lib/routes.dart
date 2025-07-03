@@ -1,13 +1,17 @@
 import 'package:eduction_system/core/constant/App_routes.dart';
+import 'package:eduction_system/core/middleware/AuthMiddleware.dart';
+import 'package:eduction_system/view/screen/OnboardingScreen.dart';
 import 'package:eduction_system/view/screen/admin/DoctorsScreen.dart';
 import 'package:eduction_system/view/screen/admin/ReportsScreen.dart';
 import 'package:eduction_system/view/screen/admin/SubAdminScreen.dart';
 import 'package:eduction_system/view/screen/admin/SubjectScreen.dart';
 import 'package:eduction_system/view/screen/admin/department_screen.dart';
-import 'package:eduction_system/view/screen/admin/gradesScreen.dart';
+import 'package:eduction_system/view/screen/admin/mainHome.dart';
 import 'package:eduction_system/view/screen/auth/login.dart';
 import 'package:eduction_system/view/screen/auth/signUp.dart';
 import 'package:eduction_system/view/screen/doctor/DoctorSubjects.dart';
+import 'package:eduction_system/view/screen/sutdents/StudentSubjectsScreen.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 List<GetPage<dynamic>>? routes = [
@@ -17,16 +21,35 @@ List<GetPage<dynamic>>? routes = [
   //   page: () => const AdminHomeScreen(),
   // ),
 
-  GetPage(
-    name: "/",
-    page: () =>  DoctorSubjectsScreen(),
-
-  ),
-
   // GetPage(
   //   name: "/",
-  //   page: () =>  OnboardingScreen(),
+  //   page: () =>  DoctorSubjectsScreen(),
+
   // ),
+
+  
+GetPage(
+  name: '/',
+  page: () => Container(), // ما بتنعرض أصلاً لأنه بيتم تحويله مباشرة
+  middlewares: [AuthMiddleware()],
+),
+
+  GetPage(
+  name: '/onboarding',
+  page: () => OnboardingScreen(),
+),
+
+
+
+
+//  GetPage(
+//     name: '/',
+//     page: () => OnboardingScreen(),
+//     middlewares: [
+//       AuthMiddleware(),
+//     ],
+//   ),
+
 
   
   GetPage(
@@ -65,10 +88,15 @@ List<GetPage<dynamic>>? routes = [
     page: () => ReportsScreen(),
   ),
 
-   GetPage(
-    name: AppRoute.grades,
-    page: () => const GradesScreen(),
-  ),
+  //  GetPage(
+  //   name: AppRoute.grades,
+  //   page: () => const GradesScreen(),
+  // ),
+
+
+GetPage(name: '/admin_home', page: () => const AdminHomeScreen()),
+GetPage(name: '/doctor_subjects', page: () => DoctorSubjectsScreen()),
+GetPage(name: '/student_subjects', page: () => StudentSubjectsScreen()),
 
 
 ];

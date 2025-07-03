@@ -7,8 +7,8 @@ class SubjectModel {
   final int departmentId;
   final int academicYear;
   final int? doctorId;
-  final UserModel? doctor; 
-  final DepartmentModel department;
+  final UserModel? doctor;
+  final DepartmentModel? department; // nullable الآن
 
   SubjectModel({
     required this.subjectId,
@@ -17,7 +17,7 @@ class SubjectModel {
     required this.academicYear,
     this.doctorId,
     this.doctor,
-    required this.department,
+    this.department,
   });
 
   factory SubjectModel.fromJson(Map<String, dynamic> json) {
@@ -26,10 +26,12 @@ class SubjectModel {
       name: json['name'],
       departmentId: json['department_id'],
       academicYear: json['academic_year'],
-      doctorId: json['doctor_id'], // null مسموح
+      doctorId: json['doctor_id'],
       doctor:
           json['doctor'] != null ? UserModel.fromJson(json['doctor']) : null,
-      department: DepartmentModel.fromJson(json['department']),
+      department: json['department'] != null
+          ? DepartmentModel.fromJson(json['department'])
+          : null,
     );
   }
 
@@ -41,7 +43,7 @@ class SubjectModel {
       'academic_year': academicYear,
       'doctor_id': doctorId,
       'doctor': doctor?.toJson(),
-      'department': department.toJson(),
+      'department': department?.toJson(),
     };
   }
 }

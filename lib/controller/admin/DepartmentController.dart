@@ -6,17 +6,14 @@ import 'package:eduction_system/model/departmentModel.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-
-abstract class DepartmentController  extends GetxController {
+abstract class DepartmentController extends GetxController {
   createDepartment({required String name});
   updateDepartment(int departmentId, String newName);
   fetchDepartments();
   deleteDepartment(int id);
-
 }
 
-class DepartmentControllerImp  extends DepartmentController  {
-
+class DepartmentControllerImp extends DepartmentController {
   List<DepartmentModel> departments = [];
 
   final TextEditingController nameController = TextEditingController();
@@ -25,11 +22,8 @@ class DepartmentControllerImp  extends DepartmentController  {
   Staterequest staterequest = Staterequest.none;
   bool isLoading = false;
 
-
-
-@override
-Future<bool> createDepartment({required String name}) async {
-
+  @override
+  Future<bool> createDepartment({required String name}) async {
     ApiClient apiClient = ApiClient();
     final MyServices myServices = Get.find<MyServices>();
     final token = myServices.sharedPref.getString("token");
@@ -44,7 +38,7 @@ Future<bool> createDepartment({required String name}) async {
     };
 
     ApiResponse response = await apiClient.postData(
-      url: '$serverLink/departments',
+      url: '${ServerConfig().serverLink}/departments',
       data: departmentData,
       headers: {
         "Authorization": "Bearer $token",
@@ -66,8 +60,7 @@ Future<bool> createDepartment({required String name}) async {
     }
   }
 
-
-@override
+  @override
   Future<bool> updateDepartment(int departmentId, String newName) async {
     ApiClient apiClient = ApiClient();
 
@@ -85,8 +78,7 @@ Future<bool> createDepartment({required String name}) async {
     };
 
     ApiResponse response = await apiClient.patchData(
-      url:
-          '$serverLink/departments/$departmentId',
+      url: '${ServerConfig().serverLink}/departments/$departmentId',
       data: departmentData,
       headers: {
         "Authorization": "Bearer $token",
@@ -104,14 +96,13 @@ Future<bool> createDepartment({required String name}) async {
     }
   }
 
-
-@override
- Future<void> deleteDepartment(int id) async {
+  @override
+  Future<void> deleteDepartment(int id) async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.deleteData(
-        url: '$serverLink/departments/$id',
+        url: '${ServerConfig().serverLink}/departments/$id',
         // ما بتمرير headers هنا، لأنه موجودة تلقائيًا داخل deleteData
       );
 
@@ -128,8 +119,7 @@ Future<bool> createDepartment({required String name}) async {
     }
   }
 
-
-@override
+  @override
   Future<void> fetchDepartments() async {
     ApiClient apiClient = ApiClient();
 
@@ -138,7 +128,7 @@ Future<bool> createDepartment({required String name}) async {
       update();
 
       ApiResponse response = await apiClient.getData(
-        url: '$serverLink/departments',
+        url: '${ServerConfig().serverLink}/departments',
       );
 
       if (response.statusCode == 200) {
@@ -168,7 +158,7 @@ Future<bool> createDepartment({required String name}) async {
 
   @override
   void dispose() {
-   nameController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 }

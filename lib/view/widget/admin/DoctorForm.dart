@@ -96,7 +96,7 @@ class _DoctorFormState extends State<DoctorForm> {
                   }
 
                   UserModel updatedDoctor = UserModel(
-                    user_id: widget.doctor!.user_id,
+                  user_id: widget.doctor!.user_id,
                     username: nameController.text.trim(),
                     phone: phoneController.text.trim(),
                     password: passwordToSend,

@@ -10,8 +10,9 @@ class SubAdminScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('إضافة أدمن فرعي',
-         style: TextStyle(
+        title: const Text(
+          'إضافة أدمن فرعي',
+          style: TextStyle(
             fontFamily: 'Cairo',
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -20,8 +21,8 @@ class SubAdminScreen extends StatelessWidget {
         ),
         backgroundColor: AppColors.primary,
         elevation: 4,
-        centerTitle: true,),
-    
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -55,7 +56,7 @@ class SubAdminScreen extends StatelessWidget {
                     style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
                   ),
                   const SizedBox(height: 12),
-                    TextFormField(
+                  TextFormField(
                     controller: controller.passwordController,
                     textDirection: TextDirection.rtl,
                     decoration: InputDecoration(
@@ -77,10 +78,12 @@ class SubAdminScreen extends StatelessWidget {
                     ),
                     style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
                   ),
-                 const SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: controller.phoneController,
                     textDirection: TextDirection.rtl,
+                    keyboardType:
+                        TextInputType.phone, // 👈 هذا السطر هو المفتاح
                     decoration: InputDecoration(
                       labelText: "رقم الهاتف ",
                       hintText: "ادخل رقم الهاتف ",
@@ -100,9 +103,8 @@ class SubAdminScreen extends StatelessWidget {
                     ),
                     style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
                   ),
-                 
                   const SizedBox(height: 24),
-                   Center(
+                  Center(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       child: ElevatedButton(
@@ -120,10 +122,8 @@ class SubAdminScreen extends StatelessWidget {
                         ),
                         child: const Text("إنشاء أدمن"),
                       ),
-
                     ),
                   ),
-              
                 ],
               ),
             ),

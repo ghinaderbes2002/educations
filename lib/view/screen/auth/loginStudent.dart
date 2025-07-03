@@ -7,9 +7,8 @@ import 'package:eduction_system/view/widget/auth/CustomTextFormFiled.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-class Login extends StatelessWidget {
-  const Login({super.key});
+class LoginStudents extends StatelessWidget {
+  const LoginStudents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,6 @@ class Login extends StatelessWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 20),
-
                         const SizedBox(height: 15),
                         const Text(
                           "eduction",
@@ -48,7 +46,7 @@ class Login extends StatelessWidget {
                           prefixIcon: Icons.person_outline,
                           validator: (val) =>
                               validInput(val!, 3, 100, "username"),
-                          isDarkMode: false, 
+                          isDarkMode: false,
                         ),
                         const SizedBox(height: 16),
                         CustomTextFormField(
@@ -61,20 +59,7 @@ class Login extends StatelessWidget {
                           validator: controller.validatePassword,
                           isDarkMode: false,
                         ),
-                        // const SizedBox(height: 8),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: GestureDetector(
-                        //     // onTap: () => Get.to(() => SignUp()),
-                        //     child: Text(
-                        //       'نسيت كلمة المرور؟',
-                        //       style: TextStyle(
-                        //         color: AppColors.primary,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                       
                         const SizedBox(height: 40),
                         CustomButton(
                           text: 'تسجيل الدخول',
@@ -83,32 +68,32 @@ class Login extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 30),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Text(" ليس لديك حساب ؟"),
-                        //     SizedBox(width: 5),
-                        //     GestureDetector(
-                        //       onTap: () => Get.offAllNamed(AppRoute.signup),
-                        //       child: Row(
-                        //         mainAxisSize: MainAxisSize
-                        //             .min, // مهم حتى ما ياخد كل عرض الشاشة
-                        //         children: [
-                        //           Text(
-                        //             " إنشاء حساب",
-                        //             style: TextStyle(
-                        //               color: AppColors.primary,
-                        //               fontWeight: FontWeight.bold,
-                        //             ),
-                        //           ),
-                        //           SizedBox(width: 4),
-                        //           Icon(Icons.person_add,
-                        //               size: 18, color: AppColors.primary),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(" ليس لديك حساب ؟"),
+                            SizedBox(width: 5),
+                            GestureDetector(
+                              onTap: () => Get.offAllNamed(AppRoute.signup),
+                              child: Row(
+                                mainAxisSize: MainAxisSize
+                                    .min, // مهم حتى ما ياخد كل عرض الشاشة
+                                children: [
+                                  Text(
+                                    " إنشاء حساب",
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Icon(Icons.person_add,
+                                      size: 18, color: AppColors.primary),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

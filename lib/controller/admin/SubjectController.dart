@@ -3,7 +3,7 @@ import 'package:eduction_system/core/constant/App_link.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
 import 'package:eduction_system/model/departmentModel.dart';
 import 'package:eduction_system/model/subjectModel.dart';
-import 'package:eduction_system/model/userModel.dart'; 
+import 'package:eduction_system/model/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,29 +18,23 @@ abstract class SubjectController extends GetxController {
     required int departmentId,
     required int doctorId,
   });
-updateSubject(SubjectModel updatedSubject) ;
+  updateSubject(SubjectModel updatedSubject);
 }
 
 class SubjectControllerImp extends SubjectController {
-
-
   TextEditingController nameController = TextEditingController();
+  TextEditingController academicYearController = TextEditingController();
 
-    bool isLoading = false;
+  bool isLoading = false;
 
-    int? currentEditingSubjectId;
+  int? currentEditingSubjectId;
 
-
-
-  List<DepartmentModel> departments =[];
+  List<DepartmentModel> departments = [];
   List<UserModel> doctors = [];
   List<SubjectModel> subjects = [];
-  
 
   DepartmentModel? selectedDepartment;
   UserModel? selectedDoctor;
-
-
 
   @override
   Future<void> fetchDepartments() async {
@@ -51,7 +45,7 @@ class SubjectControllerImp extends SubjectController {
       update();
 
       ApiResponse response = await apiClient.getData(
-        url: '$serverLink/departments',
+        url: '${ServerConfig().serverLink}/departments',
       );
 
       if (response.statusCode == 200) {
@@ -73,15 +67,13 @@ class SubjectControllerImp extends SubjectController {
     }
   }
 
-
-
-@override
+  @override
   Future<void> fetchSubjects() async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.getData(
-        url: '$serverLink/subjects',
+        url: '${ServerConfig().serverLink}/subjects',
       );
 
       if (response.statusCode == 200) {
@@ -99,7 +91,6 @@ class SubjectControllerImp extends SubjectController {
       print("Exception during fetchSubjects: $e");
     }
   }
-
 
   @override
   Future<bool> createSubject({
@@ -126,7 +117,7 @@ class SubjectControllerImp extends SubjectController {
     };
 
     ApiResponse response = await apiClient.postData(
-      url: '$serverLink/subjects',
+      url: '${ServerConfig().serverLink}/subjects',
       data: subjectData,
       headers: {
         "Authorization": "Bearer $token",
@@ -148,14 +139,13 @@ class SubjectControllerImp extends SubjectController {
     }
   }
 
-
-@override
- Future<void> fetchDoctors() async {
+  @override
+  Future<void> fetchDoctors() async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.getData(
-        url: '$serverLink/users/doctors',
+        url: '${ServerConfig().serverLink}/users/doctors',
       );
 
       if (response.statusCode == 200) {
@@ -174,12 +164,8 @@ class SubjectControllerImp extends SubjectController {
     }
   }
 
-
-
-
-@override
+  @override
   Future<bool> updateSubject(SubjectModel updatedSubject) async {
-
     print("\n\n\n\n\n\n  test \n\n\n\n\n\n : ");
     ApiClient apiClient = ApiClient();
     final MyServices myServices = Get.find<MyServices>();
@@ -198,7 +184,7 @@ class SubjectControllerImp extends SubjectController {
     };
 
     ApiResponse response = await apiClient.patchData(
-      url: '$serverLink/subjects/${updatedSubject.subjectId}',
+      url: '${ServerConfig().serverLink}/subjects/${updatedSubject.subjectId}',
       data: subjectData,
       headers: {
         "Authorization": "Bearer $token",
@@ -222,13 +208,13 @@ class SubjectControllerImp extends SubjectController {
     }
   }
 
- @override
+  @override
   Future<void> deleteSubject(int subjectId) async {
     ApiClient apiClient = ApiClient();
 
     try {
       ApiResponse response = await apiClient.deleteData(
-        url: '$serverLink/subjects/$subjectId',
+        url: '${ServerConfig().serverLink}/subjects/$subjectId',
         // headers إذا لازم، لو موجودة تلقائياً في deleteData ما تحتاج
       );
 
@@ -245,7 +231,6 @@ class SubjectControllerImp extends SubjectController {
     }
   }
 
-
   void setSelectedDepartment(DepartmentModel? dep) {
     selectedDepartment = dep;
     update();
@@ -258,7 +243,7 @@ class SubjectControllerImp extends SubjectController {
 
   @override
   void onInit() {
-    fetchDepartments(); 
+    fetchDepartments();
     fetchDoctors();
     fetchSubjects();
     super.onInit();

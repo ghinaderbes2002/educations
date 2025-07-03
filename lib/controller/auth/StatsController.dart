@@ -17,12 +17,12 @@ class StatsController extends GetxController {
     ApiClient apiClient = ApiClient();
 
     try {
-      final subjectsResponse =
-          await apiClient.getData(url: '$serverLink/subjects/count');
-      final doctorsResponse =
-          await apiClient.getData(url: '$serverLink/users/doctors/count');
-      final departmentsResponse =
-          await apiClient.getData(url: '$serverLink/departments/count');
+      final subjectsResponse = await apiClient.getData(
+          url: '${ServerConfig().serverLink}/subjects/count');
+      final doctorsResponse = await apiClient.getData(
+          url: '${ServerConfig().serverLink}/users/doctors/count');
+      final departmentsResponse = await apiClient.getData(
+          url: '${ServerConfig().serverLink}/departments/count');
 
       if (subjectsResponse.statusCode == 200) {
         subjectsCount = subjectsResponse.data['count'] ?? 0;

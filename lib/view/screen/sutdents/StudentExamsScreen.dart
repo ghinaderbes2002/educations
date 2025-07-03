@@ -1,28 +1,27 @@
-import 'package:eduction_system/controller/doctor/doctorController.dart';
+import 'package:eduction_system/controller/students/StudentController.dart';
 import 'package:eduction_system/core/them/app_colors.dart';
+import 'package:eduction_system/model/subjectModel.dart';
+import 'package:eduction_system/view/screen/sutdents/TakeExamScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eduction_system/model/subjectModel.dart';
-import 'package:eduction_system/view/screen/doctor/ExamDetailsScreen.dart';
-import 'package:eduction_system/view/screen/doctor/CreateExam.dart';
 
-class DoctorExamsScreen extends StatelessWidget {
+class StudentExamsScreen extends StatelessWidget {
   final SubjectModel subject;
 
-  const DoctorExamsScreen({Key? key, required this.subject}) : super(key: key);
+  const StudentExamsScreen({Key? key, required this.subject}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DoctorsControllerImp());
+    final controller = Get.put(StudentControllerImp());
 
     Future.microtask(() => controller.fetchExamDetailsById(subject.subjectId));
 
-    return GetBuilder<DoctorsControllerImp>(
+    return GetBuilder<StudentControllerImp>(
       builder: (controller) {
         return Scaffold(
-          appBar:   AppBar(
-            title:  Text(
-              "امتحانات ${subject.name} ",
+          appBar:  AppBar(
+            title: Text(
+              " امتحانات مادة ${subject.name} ",
               style: TextStyle(
                 fontFamily: 'Cairo',
                 fontWeight: FontWeight.bold,
@@ -35,11 +34,12 @@ class DoctorExamsScreen extends StatelessWidget {
             elevation: 4,
           ),
           
+          
         
           body: controller.isLoading
               ? Center(child: CircularProgressIndicator())
               : controller.exams.isEmpty
-                  ? Center(child: Text("لا توجد امتحانات بعد."))
+                  ? Center(child: Text("لا توجد امتحانات بعد"))
                   : ListView.builder(
                       padding: EdgeInsets.all(12),
                       itemCount: controller.exams.length,
@@ -66,24 +66,13 @@ class DoctorExamsScreen extends StatelessWidget {
                               style: TextStyle(color: Colors.grey[700]),
                             ),
                             trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                            onTap: () async {
-                                //  await controller.fetchExamDetailsById(
-                                //   exam.examId); // جلب التفاصيل
-
-                              Get.to(
-                                  () => ExamDetailsScreen(examId: exam.examId));
+                            onTap: () {
+                              Get.to(() => TakeExamScreen(exam: exam));
                             },
                           ),
-
                         );
                       },
                     ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              Get.to(() => CreateExamScreen(subject: subject));
-            },
-          ),
         );
       },
     );

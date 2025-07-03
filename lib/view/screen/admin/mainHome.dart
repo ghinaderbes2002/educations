@@ -1,4 +1,6 @@
+import 'package:eduction_system/controller/auth/signUp_controller.dart';
 import 'package:eduction_system/core/constant/App_routes.dart';
+import 'package:eduction_system/core/services/SharedPreferences.dart';
 import 'package:eduction_system/view/widget/admin/EnhancedCard.dart';
 import 'package:eduction_system/view/widget/admin/StatsCard.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,11 @@ class AdminHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final myServices = Get.find<MyServices>();
+    final role = myServices.sharedPref.getString("role");
+    print("🚨 الدور الحالي: $role");
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -35,6 +42,27 @@ class AdminHomeScreen extends StatelessWidget {
             ),
           ),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.logout, color: Colors.white),
+          tooltip: 'تسجيل الخروج',
+          onPressed: () async {
+            bool? confirm = await Get.defaultDialog<bool>(
+              title: 'تأكيد',
+              middleText: 'هل أنت متأكد من تسجيل الخروج؟',
+              textConfirm: 'نعم',
+              textCancel: 'لا',
+              onConfirm: () => Get.back(result: true),
+              onCancel: () => Get.back(result: false),
+            );
+
+            if (confirm == true) {
+              await Get.put(SignUpControllerImp()).logout();
+
+              // ممكن ترجع لصفحة تسجيل الدخول، مثلا:
+              Get.offAllNamed(AppRoute.onBoarding);
+            }
+          },
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -58,6 +86,7 @@ class AdminHomeScreen extends StatelessWidget {
                   children: [
                     StatsCard(),
                     const SizedBox(height: 20),
+                    if (role == "admin")
                     EnhancedCard(
                       title: 'إدارة الدكاترة',
                       subtitle: 'إضافة وتعديل وحذف الدكاترة',
@@ -73,6 +102,7 @@ class AdminHomeScreen extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoute.doctor),
                     ),
                     // بطاقة إدارة الأقسام
+                    if (role == "admin")
                     EnhancedCard(
                       title: 'إدارة الأقسام',
                       subtitle: 'إدارة أقسام الكلية والتخصصات',
@@ -88,6 +118,7 @@ class AdminHomeScreen extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoute.department),
                     ),
                     // بطاقة إدارة المواد
+                    if (role == "admin")
                     EnhancedCard(
                       title: 'إدارة المواد',
                       subtitle: 'إضافة وتنظيم المواد الدراسية',
@@ -102,21 +133,19 @@ class AdminHomeScreen extends StatelessWidget {
                       ),
                       onTap: () => Get.toNamed(AppRoute.subject),
                     ),
-                    EnhancedCard(
-                      title: 'إدارة موظفين الشؤون',
-                      subtitle: 'إضافة وتعديل وحذف الموظفين',
-                      icon: Icons.manage_accounts, // أيقونة إدارية
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF67C8FF), // بنفسجي فاتح
-                          Color(0xFF67C8FF), // أزرق سماوي
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                    if (role == "superadmin") 
+                      EnhancedCard(
+                        title: 'إدارة موظفين الشؤون',
+                        subtitle: 'إضافة وتعديل وحذف الموظفين',
+                        icon: Icons.manage_accounts,
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF67C8FF), Color(0xFF67C8FF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        onTap: () => Get.toNamed(AppRoute.subAdmin),
                       ),
-                      onTap: () => Get.toNamed(AppRoute.subAdmin),
-                    ),
-                    // بطاقة إدارة التقارير
+
                     EnhancedCard(
                       title: 'إدارة التقارير',
                       subtitle: 'عرض وتحليل تقارير الأداء',

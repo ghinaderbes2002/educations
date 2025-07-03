@@ -26,6 +26,7 @@ class _AddDoctorFormState extends State<AddDoctorForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // الاسم
             TextFormField(
               controller: nameController,
               textDirection: TextDirection.rtl,
@@ -54,9 +55,12 @@ class _AddDoctorFormState extends State<AddDoctorForm> {
                   val == null || val.isEmpty ? 'أدخل الاسم' : null,
             ),
             const SizedBox(height: 12),
+
+            // رقم الهاتف
             TextFormField(
               controller: phoneController,
               textDirection: TextDirection.rtl,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 labelText: 'رقم الهاتف',
                 labelStyle:
@@ -82,6 +86,8 @@ class _AddDoctorFormState extends State<AddDoctorForm> {
                   val == null || val.isEmpty ? 'أدخل رقم الهاتف' : null,
             ),
             const SizedBox(height: 12),
+
+            // كلمة المرور
             TextFormField(
               controller: passwordController,
               textDirection: TextDirection.rtl,
@@ -111,19 +117,41 @@ class _AddDoctorFormState extends State<AddDoctorForm> {
                   val == null || val.isEmpty ? 'أدخل كلمة المرور' : null,
             ),
             const SizedBox(height: 20),
+
+            // زر الإضافة
             ElevatedButton(
-            onPressed: () async {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await controller.createDoctor(
+                  final success = await controller.createDoctor(
                     username: nameController.text,
                     password: passwordController.text,
                     phone: phoneController.text,
                   );
 
-                  Get.back();
+                  if (success) {
+                    Get.snackbar(
+                      'نجاح',
+                      'تمت إضافة الدكتور بنجاح',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.green.withOpacity(0.8),
+                      colorText: Colors.white,
+                      margin: const EdgeInsets.all(12),
+                      duration: const Duration(seconds: 3),
+                    );
+                    Get.back();
+                  } else {
+                    Get.snackbar(
+                      'خطأ',
+                      'فشل في إضافة الدكتور',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red.withOpacity(0.8),
+                      colorText: Colors.white,
+                      margin: const EdgeInsets.all(12),
+                      duration: const Duration(seconds: 3),
+                    );
+                  }
                 }
               },
-
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF2E3A59),
                 foregroundColor: Colors.white,

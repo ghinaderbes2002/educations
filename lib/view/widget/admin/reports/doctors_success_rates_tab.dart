@@ -1,61 +1,72 @@
+import 'package:eduction_system/controller/admin/ReportController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eduction_system/controller/admin/ReportController.dart';
-import 'package:eduction_system/core/them/app_colors.dart';
 
-class DoctorsSuccessRatesTab extends StatelessWidget {
+class DoctorsSuccessRatesTab extends StatefulWidget {
   const DoctorsSuccessRatesTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<ReportController>();
+  State<DoctorsSuccessRatesTab> createState() => _DoctorsSuccessRatesTabState();
+}
 
-    return ListView.builder(
-      itemCount: controller.doctorsSuccessRates.length,
-      padding: const EdgeInsets.all(12),
-      itemBuilder: (context, index) {
-        final doctor = controller.doctorsSuccessRates[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
+class _DoctorsSuccessRatesTabState extends State<DoctorsSuccessRatesTab> {
+  final PromotionController controller = Get.put(PromotionController());
+
+  @override
+  void initState() {
+    super.initState();
+    // تم حذف استدعاء fetchPromotionRates() لأنه موجود في onInit()
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+     
+      body: GetBuilder<PromotionController>(
+        builder: (_) {
+          if (controller.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (controller.doctorsSuccessRates.isEmpty) {
+            return Center(
+              child: Text(
+                "لا توجد بيانات نسب نجاح.",
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+            );
+          }
+
+          return ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            itemCount: controller.doctorsSuccessRates.length,
+            separatorBuilder: (_, __) => Divider(color: Colors.grey[300]),
+            itemBuilder: (context, index) {
+              final doctor = controller.doctorsSuccessRates[index];
+              return ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                leading: CircleAvatar(
+                  backgroundColor: Colors.blueAccent,
+                  child: Text(
+                    doctor.name.isNotEmpty ? doctor.name[0] : '?',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                title: Text(
                   doctor.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'نسبة النجاح: ${doctor.successRate.toStringAsFixed(1)}%',
-                  style: TextStyle(
-                    color: AppColors.success,
-                    fontWeight: FontWeight.w500,
-                  ),
+                subtitle: Text(
+                  'نسبة النجاح: ${doctor.successRate.toStringAsFixed(2)}%',
+                  style: TextStyle(color: Colors.black87),
                 ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: doctor.successRate / 100,
-                    backgroundColor: AppColors.error.withOpacity(0.2),
-                    color: AppColors.success,
-                    minHeight: 8,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

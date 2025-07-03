@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:eduction_system/core/classes/api_client.dart';
 import 'package:eduction_system/core/classes/staterequest.dart';
 import 'package:eduction_system/core/constant/App_link.dart';
+import 'package:eduction_system/core/constant/App_routes.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
 import 'package:eduction_system/model/userModel.dart';
 import 'package:eduction_system/view/screen/doctor/DoctorSubjects.dart';
 import 'package:eduction_system/view/screen/admin/mainHome.dart';
+import 'package:eduction_system/view/screen/sutdents/StudentSubjectsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 abstract class LoginController extends GetxController {
   login();
@@ -22,11 +23,15 @@ class LoginControllerImp extends LoginController {
   late TextEditingController name;
   late TextEditingController password;
 
+
+            final myServices = Get.find<MyServices>();
+
+
   Staterequest staterequest = Staterequest.none;
 
   bool isPasswordHidden = true;
 
- @override
+  @override
   login() async {
     ApiClient apiClient = ApiClient();
 
@@ -36,7 +41,7 @@ class LoginControllerImp extends LoginController {
 
       try {
         ApiResponse<dynamic> postResponse = await apiClient.postData(
-          url: '$serverLink/auth/login',
+          url: '${ServerConfig().serverLink}/auth/login',
           data: {
             'username': name.text.trim(),
             'password': password.text.trim(),
@@ -53,37 +58,56 @@ class LoginControllerImp extends LoginController {
           // استخرج التوكن واليوزر من الداتا
           final token = responseData["accessToken"];
           final userData = responseData["user"];
-
           if (token != null && userData != null) {
             final prefs = await SharedPreferences.getInstance();
             await prefs.setString('token', token);
             await prefs.setString('user', jsonEncode(userData));
 
-            // حول بيانات المستخدم إلى موديل
+            final academicYear = userData["academicYear"] ?? 1;
+            await prefs.setInt('academicYear', academicYear);
+
+            final userId = userData["user_id"] ?? userData["id"];
+            await prefs.setInt('userId', userId); // <-- هنا الحفظ
+
             UserModel currentUser = UserModel.fromJson(userData);
 
-            final myServices = Get.find<MyServices>();
             await myServices.sharedPref
                 .setString("user", jsonEncode(currentUser.toJson()));
             await myServices.sharedPref.setString("token", token);
+            await myServices.sharedPref.setInt('academicYear', academicYear);
 
+            await myServices.sharedPref.setString("role", userData["role"]);
+            await myServices.sharedPref.setBool("isLoggedIn", true);
+
+            print("تم حفظ الدور: ${userData["role"]}");
             print("تم الحفظ: ${myServices.sharedPref.getString("token")}");
             print("تم حفظ بيانات المستخدم: ${currentUser.username}");
             print("تم حفظ التوكن: $token");
+            print("تم حفظ السنة الدراسية: $academicYear");
           } else {
             Get.snackbar("خطأ", "بيانات المستخدم أو التوكن غير موجودة في الرد");
           }
 
           print("نجاح تسجيل الدخول");
-         final role = userData["role"];
+
+          final role = userData["role"];
 
           if (role == "admin" || role == "superadmin") {
+           await myServices.sharedPref.setInt("step", 1);
+
             Get.offAll(() => const AdminHomeScreen());
+
           } else if (role == "doctor") {
-            Get.offAll(() =>  DoctorSubjectsScreen());
+                       await myServices.sharedPref.setInt("step", 2);
+
+            Get.offAll(() => DoctorSubjectsScreen());
           } else if (role == "student") {
-            // Get.offAll(() => const StudentHomeScreen());
+                       await myServices.sharedPref.setInt("step", 3);
+
+            Get.offAll(() => StudentSubjectsScreen());
           } else {
+                                   await myServices.sharedPref.setInt("step", 4);
+
             Get.snackbar("خطأ", "دور غير معروف: $role");
           }
         } else {
@@ -98,8 +122,6 @@ class LoginControllerImp extends LoginController {
       }
     }
   }
-
-
 
   void togglePasswordVisibility() {
     isPasswordHidden = !isPasswordHidden;

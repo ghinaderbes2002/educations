@@ -57,7 +57,7 @@ class AdminController extends GetxController {
     };
 
     ApiResponse response = await apiClient.postData(
-      url: '$serverLink/auth/create-admin',
+      url: '${ServerConfig().serverLink}/auth/create-admin',
       data: adminData,
       headers: {
         "Authorization": "Bearer $token",

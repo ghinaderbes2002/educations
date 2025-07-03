@@ -7,7 +7,7 @@ import 'package:eduction_system/controller/admin/ReportController.dart';
 import 'package:eduction_system/core/them/app_colors.dart';
 
 class ReportsScreen extends StatelessWidget {
-  final ReportController controller = Get.put(ReportController());
+  final PromotionController controller = Get.put(PromotionController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +49,13 @@ class ReportsScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: GetBuilder<ReportController>(
+          body: GetBuilder<PromotionController>(
             builder: (controller) {
               if (controller.isLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              return const TabBarView(
+              return TabBarView(
                 children: [
                   StudentGradesTab(),
                   TopStudentsTab(),

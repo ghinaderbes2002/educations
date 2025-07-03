@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:eduction_system/controller/admin/SubjectController.dart';
 import 'package:eduction_system/core/them/app_colors.dart';
 import 'package:eduction_system/model/departmentModel.dart';
@@ -102,7 +104,6 @@ class SubjectScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  // الدكتور
                   DropdownButtonFormField<UserModel>(
                     value: controller.selectedDoctor,
                     decoration: InputDecoration(
@@ -141,12 +142,55 @@ class SubjectScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
+                  TextFormField(
+                    controller: controller.academicYearController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.right,
+                    decoration: InputDecoration(
+                      labelText: "السنة الدراسية",
+                      hintText: "أدخل السنة من 1 إلى 5",
+                      prefixIcon: const Icon(Icons.calendar_today,
+                          color: AppColors.primary),
+                      filled: true,
+                      fillColor:
+                          isDarkMode ? Colors.grey[800] : Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                            color: AppColors.primary, width: 2),
+                      ),
+                    ),
+                    style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
+                    validator: (val) {
+                      if (val == null || val.isEmpty)
+                        return 'يرجى إدخال السنة الدراسية';
+                      int? year = int.tryParse(val);
+                      if (year == null || year < 1 || year > 5)
+                        return 'السنة غير صحيحة';
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
                   // زر الإضافة
                   Center(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       child: ElevatedButton(
                         onPressed: () async {
+                          // print("""\n\n\n\n -------------------\n
+                          // [DEBUG - FAISAL] : ${controller.selectedDoctor != null ? controller.selectedDoctor!.user_id : " NOT FOUND"}
+                          //   \n--------------------  \n\n\n\n""");
+
+                          // print(jsonEncode(controller.selectedDoctor!));
+                          // print("""\n\n\n\n -------------------\n
+                          // [DEBUG - FAISAL] : ${controller.selectedDepartment != null ? controller.selectedDepartment!.name : " NOT FOUND"}
+                          //   \n--------------------  \n\n\n\n""");
                           if (controller.nameController.text.trim().isEmpty ||
                               controller.selectedDepartment == null ||
                               controller.selectedDoctor == null) {
@@ -154,9 +198,23 @@ class SubjectScreen extends StatelessWidget {
                                 "يرجى إدخال اسم المادة واختيار القسم والدكتور");
                             return;
                           }
+                          if (controller.selectedDepartment == null ||
+                              controller.selectedDoctor == null) {
+                            Get.snackbar("خطأ",
+                                "يرجى اختيار القسم والدكتور قبل إنشاء المادة");
+                            return;
+                          }
+
+                          if (controller.selectedDoctor!.user_id == null) {
+                            Get.snackbar("خطأ",
+                                "رقم تعريف الدكتور غير موجود. يرجى إعادة تحميل البيانات.");
+                            return;
+                          }
+
                           bool success = await controller.createSubject(
                             name: controller.nameController.text.trim(),
-                            academicYear: 2,
+                            academicYear: int.parse(
+                                controller.academicYearController.text),
                             departmentId:
                                 controller.selectedDepartment!.departmentId,
                             doctorId: controller.selectedDoctor!.user_id!,

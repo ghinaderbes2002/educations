@@ -1,12 +1,13 @@
 import 'package:eduction_system/controller/auth/signUp_controller.dart';
+import 'package:eduction_system/core/classes/staterequest.dart';
 import 'package:eduction_system/core/function/validinput.dart';
 import 'package:eduction_system/core/them/app_colors.dart';
 import 'package:eduction_system/view/screen/auth/login.dart';
+import 'package:eduction_system/view/screen/auth/loginStudent.dart';
 import 'package:eduction_system/view/widget/auth/CustomButton.dart';
 import 'package:eduction_system/view/widget/auth/CustomTextFormFiled.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -47,7 +48,7 @@ class SignUp extends StatelessWidget {
                           validator: (val) =>
                               validInput(val!, 3, 100, "username"),
                           isDarkMode: false,
-                        ),                   
+                        ),
                         const SizedBox(height: 16),
                         CustomTextFormField(
                           controller: controller.password,
@@ -70,17 +71,13 @@ class SignUp extends StatelessWidget {
                           keyboardType: TextInputType.phone,
                           isDarkMode: false,
                         ),
-                         const SizedBox(height: 16),
-                      if (controller.userType == "student") ...[
+                        const SizedBox(height: 16),
+                        if (controller.userType == "student") ...[
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 "المرحلة الدراسية",
-                                // style: TextStyle(
-                                //   fontWeight: FontWeight.bold,
-                                //   fontSize: 16,
-                                // ),
                               ),
                               const SizedBox(height: 8),
                               DropdownButtonFormField<String>(
@@ -89,18 +86,19 @@ class SignUp extends StatelessWidget {
                                   hintText: 'اختر المرحلة الدراسية',
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 16),
-                                   border: OutlineInputBorder(
+                                  border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    
                                     borderSide: BorderSide(
-                                      color: AppColors.lightGrey.withOpacity(0.5)!,
+                                      color:
+                                          AppColors.lightGrey.withOpacity(0.5)!,
                                       width: 1,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide(
-                                      color: AppColors.lightGrey.withOpacity(0.5),
+                                      color:
+                                          AppColors.lightGrey.withOpacity(0.5),
                                       width: 1,
                                     ),
                                   ),
@@ -124,10 +122,70 @@ class SignUp extends StatelessWidget {
                                   return null;
                                 },
                               ),
+                              const SizedBox(height: 16),
+                             Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "القسم",
+                                   
+                                  ),
+                                  const SizedBox(height: 8),
+                                  DropdownButtonFormField<int>(
+                                    value: controller.departments.any((d) =>
+                                            d['department_id'] ==
+                                            controller.selectedDepartmentId)
+                                        ? controller.selectedDepartmentId
+                                        : null,
+                                    decoration: InputDecoration(
+                                      hintText: 'اختر القسم',
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 16),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: AppColors.lightGrey
+                                              .withOpacity(0.5)!,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: AppColors.lightGrey
+                                              .withOpacity(0.5),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: const BorderSide(
+                                            color: AppColors.primary),
+                                      ),
+                                    ),
+                                    items: controller.departments.map((dept) {
+                                      return DropdownMenuItem<int>(
+                                        value: dept['department_id'],
+                                        child: Text(dept['name']),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      controller.setSelectedDepartment(value);
+                                    },
+                                    validator: (val) {
+                                      if (val == null) {
+                                        return 'يرجى اختيار القسم';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ],
+                              )
+
                             ],
                           ),
                         ],
-
                         const SizedBox(height: 40),
                         CustomButton(
                           text: 'إنشاء حساب',
@@ -140,9 +198,9 @@ class SignUp extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("لديك حساب بالفعل؟"),
-                           const  SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             GestureDetector(
-                              onTap: () => Get.to(() => Login()),
+                              onTap: () => Get.to(() => LoginStudents()),
                               child: Row(
                                 mainAxisSize: MainAxisSize
                                     .min, // مهم حتى ما ياخد كل عرض الشاشة
