@@ -44,7 +44,7 @@ class DoctorControllerImp extends DoctorController {
 
     Map<String, dynamic> doctorData = {
       'username': username.trim(),
-      'password': "$phone@Doctor@123",
+      'password': "$phone@doctor",
       'phone': phone.trim(),
     };
 

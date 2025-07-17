@@ -52,7 +52,7 @@ class AdminController extends GetxController {
 
     Map<String, dynamic> adminData = {
       'username': username,
-      'password': "$phone@subAdmin@123",
+      'password': "$phone@subAdmin",
       'phone': phone,
     };
 

@@ -40,8 +40,7 @@ class _TakeExamScreenState extends State<TakeExamScreen>
   }
 
   Future<bool> _onWillPop() async {
-    bool confirm = false;
-    await Get.dialog(
+    final result = await Get.dialog<bool>(
       AlertDialog(
         title: const Text("تأكيد الانسحاب", textAlign: TextAlign.right),
         content: const Text(
@@ -50,17 +49,11 @@ class _TakeExamScreenState extends State<TakeExamScreen>
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              confirm = false;
-              Get.back();
-            },
+            onPressed: () => Get.back(result: false),
             child: const Text("لا"),
           ),
           TextButton(
-            onPressed: () {
-              confirm = true;
-              Get.back();
-            },
+            onPressed: () => Get.back(result: true),
             child: const Text("نعم"),
           ),
         ],
@@ -68,39 +61,36 @@ class _TakeExamScreenState extends State<TakeExamScreen>
       barrierDismissible: false,
     );
 
-    if (confirm) {
+    if (result == true) {
       await _failExam();
-      return false; // لا ترجع للخلف تلقائيًا، لأنه _failExam بيعمل Get.back()
+      // Don't pop here, _failExam handles navigation
+      return false;
     }
-
-    return false; // إذا رفض، يبقى في الصفحة
+    // Stay on page if cancelled
+    return false;
   }
 
   Future<void> _failExam() async {
     final controller = Get.find<StudentControllerImp>();
     try {
-      await controller
-          .submitAnswers(widget.exam.examId, []); // إرسال بدون إجابات
+      await controller.submitAnswers(widget.exam.examId, []);
     } catch (_) {}
-    if (mounted) {
-      Get.dialog(
-        AlertDialog(
-          title: const Text("تنبيه", textAlign: TextAlign.right),
-          content: const Text("تم اعتبارك راسبًا لأنك خرجت من الامتحان",
-              textAlign: TextAlign.right),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back(); // إغلاق الـ dialog
-                Get.back(); // الرجوع من صفحة الامتحان
-              },
-              child: const Text("رجوع"),
-            )
-          ],
-        ),
-        barrierDismissible: false, // تمنع إغلاق الـ dialog بالنقر خارجه
-      );
-    }
+    if (!mounted) return;
+    await Get.dialog(
+      AlertDialog(
+        title: const Text("تنبيه", textAlign: TextAlign.right),
+        content: const Text("تم اعتبارك راسبًا لأنك خرجت من الامتحان",
+            textAlign: TextAlign.right),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text("رجوع"),
+          )
+        ],
+      ),
+      barrierDismissible: false,
+    );
+    if (mounted) Get.back(); // Pop exam screen after dialog
   }
 
   @override
