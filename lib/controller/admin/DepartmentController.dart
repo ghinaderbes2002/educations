@@ -1,3 +1,4 @@
+import 'package:eduction_system/controller/auth/StatsController.dart';
 import 'package:eduction_system/core/classes/api_client.dart';
 import 'package:eduction_system/core/classes/staterequest.dart';
 import 'package:eduction_system/core/constant/App_link.dart';
@@ -21,6 +22,7 @@ class DepartmentControllerImp extends DepartmentController {
 
   Staterequest staterequest = Staterequest.none;
   bool isLoading = false;
+  final statsController = Get.put(StatsController());
 
   @override
   Future<bool> createDepartment({required String name}) async {
@@ -52,7 +54,9 @@ class DepartmentControllerImp extends DepartmentController {
       // ✅ أضف القسم الجديد للقائمة مباشرة
       final newDep = DepartmentModel.fromJson(response.data);
       departments.add(newDep);
+      statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
       update(); // تحدث الواجهة
+
       return true;
     } else {
       Get.snackbar("خطأ", "فشل إضافة القسم: ${response.data}");
@@ -109,6 +113,8 @@ class DepartmentControllerImp extends DepartmentController {
       if (response.statusCode == 200 || response.statusCode == 204) {
         print("✔️ تم حذف القسم رقم $id بنجاح");
         await fetchDepartments(); // إعادة تحميل الأقسام
+        statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
+
         update();
       } else {
         Get.snackbar("خطأ", "فشل في حذف القسم: ${response.statusCode}");

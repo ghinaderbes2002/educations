@@ -75,7 +75,7 @@ class StudentControllerImp extends StudentController {
 
   @override
   @override
-  Future<int> submitAnswers(
+  Future<int?> submitAnswers(
       int examId, List<studentAnswerModel> answers) async {
     try {
       ApiClient apiClient = ApiClient();
@@ -106,14 +106,28 @@ class StudentControllerImp extends StudentController {
         // حالة تقديم الامتحان مسبقًا
         throw Exception("400: لقد قدمت هذا الامتحان مسبقًا.");
       } else {
-        Get.snackbar("خطأ", "فشل في إرسال الإجابات: ${response.statusCode}");
         return 0;
       }
     } catch (e) {
-      Get.snackbar("خطأ", "حدث خطأ أثناء إرسال الإجابات");
-      print("❌ Exception: $e");
-      rethrow; // مهم نعيد رمي الاستثناء علشان نعالجه برا
+      if (e.toString().contains("400")) {
+        Get.snackbar(
+          "تنبيه",
+          "لقد قدمت هذا الامتحان مسبقًا.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange.shade200,
+          colorText: Colors.black,
+        );
+      } else {
+        Get.snackbar(
+          "خطأ",
+          "حدث خطأ أثناء إرسال الإجابات",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade200,
+          colorText: Colors.white,
+        );
+      }
     }
+    return null;
   }
 
   @override
@@ -161,6 +175,7 @@ class StudentControllerImp extends StudentController {
             '${ServerConfig().serverLink}/exams/average/$studentId/$academicYear',
       );
 
+      print(response.data);
       if (response.statusCode == 200) {
         final body = response.data;
         // من المفترض هيك شكل الداتا حسب المثال اللي أعطيت

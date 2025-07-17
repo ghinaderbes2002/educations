@@ -88,35 +88,35 @@ class _AddDoctorFormState extends State<AddDoctorForm> {
             const SizedBox(height: 12),
 
             // كلمة المرور
-            TextFormField(
-              controller: passwordController,
-              textDirection: TextDirection.rtl,
-              decoration: InputDecoration(
-                labelText: 'كلمة المرور',
-                labelStyle:
-                    const TextStyle(fontFamily: 'Cairo', color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1.5),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Color(0xFF2E3A59), width: 2),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                filled: true,
-                fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
-                prefixIcon: const Icon(Icons.lock, color: Color(0xFF2E3A59)),
-              ),
-              style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
-              obscureText: true,
-              validator: (val) =>
-                  val == null || val.isEmpty ? 'أدخل كلمة المرور' : null,
-            ),
-            const SizedBox(height: 20),
+            // TextFormField(
+            //   controller: passwordController,
+            //   textDirection: TextDirection.rtl,
+            //   decoration: InputDecoration(
+            //     labelText: 'كلمة المرور',
+            //     labelStyle:
+            //         const TextStyle(fontFamily: 'Cairo', color: Colors.grey),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(16),
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+            //       borderRadius: BorderRadius.circular(16),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderSide:
+            //           const BorderSide(color: Color(0xFF2E3A59), width: 2),
+            //       borderRadius: BorderRadius.circular(16),
+            //     ),
+            //     filled: true,
+            //     fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
+            //     prefixIcon: const Icon(Icons.lock, color: Color(0xFF2E3A59)),
+            //   ),
+            //   style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
+            //   obscureText: true,
+            //   validator: (val) =>
+            //       val == null || val.isEmpty ? 'أدخل كلمة المرور' : null,
+            // ),
+            // const SizedBox(height: 20),
 
             // زر الإضافة
             ElevatedButton(

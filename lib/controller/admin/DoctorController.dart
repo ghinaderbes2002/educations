@@ -1,3 +1,4 @@
+import 'package:eduction_system/controller/auth/StatsController.dart';
 import 'package:eduction_system/core/classes/api_client.dart';
 import 'package:eduction_system/core/constant/App_link.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
@@ -20,6 +21,7 @@ class DoctorControllerImp extends DoctorController {
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late TextEditingController passwordController;
+  final statsController = Get.put(StatsController());
 
   List<UserModel> doctors = [];
   bool isLoading = false;
@@ -42,7 +44,7 @@ class DoctorControllerImp extends DoctorController {
 
     Map<String, dynamic> doctorData = {
       'username': username.trim(),
-      'password': password.trim(),
+      'password': "$phone@Doctor@123",
       'phone': phone.trim(),
     };
 
@@ -66,6 +68,8 @@ class DoctorControllerImp extends DoctorController {
         role: "doctor",
       ));
       update();
+      statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
+
       return true;
     } else {
       Get.snackbar("خطأ", "فشل إضافة الدكتور: ${response.data}");
@@ -162,6 +166,7 @@ class DoctorControllerImp extends DoctorController {
         // ممكن تحدث القائمة أو تعمل أي شيء بعد الحذف
         await fetchDoctors(); // لو بدك تعيد تحميل الدكاترة
         update();
+        statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
       } else {
         Get.snackbar("خطأ", "فشل في حذف الدكتور: ${response.statusCode}");
       }

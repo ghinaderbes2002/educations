@@ -2,7 +2,6 @@ import 'package:eduction_system/core/them/app_colors.dart';
 import 'package:eduction_system/core/them/app_fonts.dart';
 import 'package:flutter/material.dart';
 
-
 class CustomTextFormField extends StatelessWidget {
   final String label;
   final String hintText;
@@ -62,7 +61,6 @@ class CustomTextFormField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        // TextFormField
         TextFormField(
           controller: controller,
           obscureText: isPassword,
@@ -77,6 +75,8 @@ class CustomTextFormField extends StatelessWidget {
             fontSize: 15,
             fontWeight: AppFonts.regular,
           ),
+          textDirection:
+              isPassword ? TextDirection.ltr : null, // ← هذا هو التعديل الجديد
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(
@@ -84,7 +84,6 @@ class CustomTextFormField extends StatelessWidget {
               fontSize: 14,
               fontWeight: AppFonts.regular,
             ),
-
             prefixIcon: Icon(
               prefixIcon,
               color: iconColor,
@@ -102,15 +101,6 @@ class CustomTextFormField extends StatelessWidget {
                     onPressed: onPasswordToggle,
                   )
                 : null,
-
-            // suffixIcon: isPassword && onPasswordToggle != null ? IconButton(
-            //   icon: Icon(
-            //     isPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-            //     color: iconColor,
-            //     size: 22,
-            //   ),
-            //   onPressed: onPasswordToggle,
-            // ) : null,
 
             // Borders
             border: OutlineInputBorder(

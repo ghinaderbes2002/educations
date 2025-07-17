@@ -1,3 +1,4 @@
+import 'package:eduction_system/controller/auth/StatsController.dart';
 import 'package:eduction_system/core/classes/api_client.dart';
 import 'package:eduction_system/core/constant/App_link.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
@@ -35,6 +36,8 @@ class SubjectControllerImp extends SubjectController {
 
   DepartmentModel? selectedDepartment;
   UserModel? selectedDoctor;
+
+  final statsController = Get.put(StatsController());
 
   @override
   Future<void> fetchDepartments() async {
@@ -130,6 +133,7 @@ class SubjectControllerImp extends SubjectController {
 
       subjects.add(SubjectModel.fromJson(response.data));
       update();
+      statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
 
       return true;
     } else {
@@ -222,6 +226,7 @@ class SubjectControllerImp extends SubjectController {
         print("✔️ تم حذف المادة رقم $subjectId بنجاح");
         await fetchSubjects(); // إعادة تحميل المواد بعد الحذف
         update();
+        statsController.fetchAllStats(); // حتى تتحدث الواجهة المرتبطة فيه
       } else {
         Get.snackbar("خطأ", "فشل في حذف المادة: ${response.statusCode}");
       }

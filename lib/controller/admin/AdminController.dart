@@ -16,7 +16,7 @@ class AdminController extends GetxController {
     String password = passwordController.text.trim();
     String phone = phoneController.text.trim();
 
-    if (username.isEmpty || password.isEmpty || phone.isEmpty) {
+    if (username.isEmpty || phone.isEmpty) {
       Get.snackbar("خطأ", "الرجاء تعبئة كل الحقول");
       return;
     }
@@ -52,7 +52,7 @@ class AdminController extends GetxController {
 
     Map<String, dynamic> adminData = {
       'username': username,
-      'password': password,
+      'password': "$phone@subAdmin@123",
       'phone': phone,
     };
 

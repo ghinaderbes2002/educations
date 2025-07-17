@@ -160,7 +160,7 @@ class CreateExamScreen extends StatelessWidget {
                           elevation: 5,
                         ),
                         child: const Text(
-                          " حفظ السؤال والتالي" ,
+                          " حفظ السؤال " ,
                           style: TextStyle(
                             fontFamily: 'Cairo',
                             fontSize: 14,
@@ -244,7 +244,7 @@ class CreateExamScreen extends StatelessWidget {
                           elevation: 5,
                         ),
                         child: const Text(
-                          "تم",
+                          "إنهاء الاسئلة",
                           style: TextStyle(
                             fontFamily: 'Cairo',
                             fontSize: 14,

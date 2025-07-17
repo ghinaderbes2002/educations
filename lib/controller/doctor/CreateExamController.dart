@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eduction_system/controller/doctor/doctorController.dart';
 import 'package:eduction_system/core/classes/api_client.dart';
 import 'package:eduction_system/core/constant/App_link.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
@@ -14,6 +15,8 @@ class CreateExamController extends GetxController {
   TextEditingController questionController = TextEditingController();
   List<TextEditingController> optionControllers =
       List.generate(4, (_) => TextEditingController());
+
+  final doctorController = Get.put(DoctorsControllerImp());
 
   int correctAnswerIndex = 0; // بدّل RxInt لـ int عادي
 
@@ -93,6 +96,8 @@ class CreateExamController extends GetxController {
       correctAnswerIndex = 0;
       clearQuestions();
       examType = null;
+       doctorController.fetchExamDetailsById(subjectId); // حتى تتحدث الواجهة المرتبطة فيه
+
       update();
     } else {
       print("فشل في الحفظ: ${response.statusCode} - ${response.data}");
@@ -148,7 +153,6 @@ class CreateExamController extends GetxController {
   }
 }
 
-/// نموذج السؤال مع خياراته والإجابة الصحيحة
 class QuestionItem {
   final String questionText;
   final List<String> options; // 4 خيارات دائماً

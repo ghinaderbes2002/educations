@@ -96,7 +96,7 @@ class StudentGradesScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "${average.toStringAsFixed(2)} / 20",
+                      "${average.toStringAsFixed(2)}",
                       style: const TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 36,

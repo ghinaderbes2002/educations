@@ -56,29 +56,29 @@ class SubAdminScreen extends StatelessWidget {
                     style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
-                    controller: controller.passwordController,
-                    textDirection: TextDirection.rtl,
-                    decoration: InputDecoration(
-                      labelText: "كلمة المرور",
-                      hintText: "ادخل كلمة المرور ",
-                      prefixIcon:
-                          const Icon(Icons.password, color: AppColors.primary),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            color: AppColors.primary, width: 2),
-                      ),
-                    ),
-                    style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
-                  ),
-                  const SizedBox(height: 12),
+                  // TextFormField(
+                  //   controller: controller.passwordController,
+                  //   textDirection: TextDirection.rtl,
+                  //   decoration: InputDecoration(
+                  //     labelText: "كلمة المرور",
+                  //     hintText: "ادخل كلمة المرور ",
+                  //     prefixIcon:
+                  //         const Icon(Icons.password, color: AppColors.primary),
+                  //     filled: true,
+                  //     fillColor: Colors.grey[100],
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       borderSide: BorderSide.none,
+                  //     ),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       borderSide: const BorderSide(
+                  //           color: AppColors.primary, width: 2),
+                  //     ),
+                  //   ),
+                  //   style: const TextStyle(fontFamily: 'Cairo', fontSize: 16),
+                  // ),
+                  // const SizedBox(height: 12),
                   TextFormField(
                     controller: controller.phoneController,
                     textDirection: TextDirection.rtl,

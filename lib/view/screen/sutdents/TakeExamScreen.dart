@@ -39,10 +39,41 @@ class _TakeExamScreenState extends State<TakeExamScreen>
     }
   }
 
-  // يرسب الطالب إذا كبس زر الرجوع
   Future<bool> _onWillPop() async {
-    await _failExam();
-    return false;
+    bool confirm = false;
+    await Get.dialog(
+      AlertDialog(
+        title: const Text("تأكيد الانسحاب", textAlign: TextAlign.right),
+        content: const Text(
+          "هل أنت متأكد أنك تريد الانسحاب من الامتحان؟ سيتم اعتبارك راسبًا.",
+          textAlign: TextAlign.right,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              confirm = false;
+              Get.back();
+            },
+            child: const Text("لا"),
+          ),
+          TextButton(
+            onPressed: () {
+              confirm = true;
+              Get.back();
+            },
+            child: const Text("نعم"),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+
+    if (confirm) {
+      await _failExam();
+      return false; // لا ترجع للخلف تلقائيًا، لأنه _failExam بيعمل Get.back()
+    }
+
+    return false; // إذا رفض، يبقى في الصفحة
   }
 
   Future<void> _failExam() async {
@@ -139,7 +170,8 @@ class _TakeExamScreenState extends State<TakeExamScreen>
                   try {
                     final controller = Get.find<StudentControllerImp>();
                     int score =
-                        await controller.submitAnswers(exam.examId, answers);
+                        await controller.submitAnswers(exam.examId, answers) ??
+                            0;
 
                     Get.dialog(AlertDialog(
                       title:

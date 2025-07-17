@@ -1,5 +1,6 @@
 import 'package:eduction_system/controller/auth/signUp_controller.dart';
 import 'package:eduction_system/controller/students/StudentController.dart';
+import 'package:eduction_system/core/constant/App_link.dart';
 import 'package:eduction_system/core/constant/App_routes.dart';
 import 'package:eduction_system/core/services/SharedPreferences.dart';
 import 'package:eduction_system/core/them/app_colors.dart';
@@ -40,7 +41,7 @@ class StudentSubjectsScreen extends StatelessWidget {
               elevation: 4,
               leading: IconButton(
                 icon: const Icon(Icons.grade, color: Colors.white),
-                tooltip: "كشف العلامات",
+                tooltip: "${ServerConfig().serverLink}",
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   final myServices = Get.find<MyServices>();
